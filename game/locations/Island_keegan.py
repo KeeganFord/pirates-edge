@@ -116,8 +116,6 @@ class Macaque(combat.Monster):
         super().__init__(name, random.randrange(7,20), attacks, 180 + random.randrange(-20,21))
         self.type_name = "Man-eating Macacque"
 
-
-
 class ManEatingMonkeys (event.Event):
     '''
     A combat encounter with a troop of man eating monkies.
@@ -287,9 +285,8 @@ class dungeon_entrance (location.SubLocation):
         self.verbs['south'] = self
         self.verbs['east'] = self
         self.verbs['west'] = self
-        self.verbs['placea'] = self
-        self.verbs['placeb'] = self
-        self.verbs['placec'] = self
+        self.verbs['place'] = self
+       
 
 
         # Include a couple of items and the ability to pick them up, for demo purposes
@@ -321,18 +318,24 @@ class dungeon_entrance (location.SubLocation):
         ped_a = False
         ped_b = False
         ped_c = False
-        if (verb == "placea"):
-            if "small candle stick" in config.the_player.inventory:
-                display.announce(f"The first pedestal lowers into the ground")
+        if (verb == "place"):
+            display.announce("which candlestick should be put on the first pedestal")
+            display.announce("Short\nMedium\nTall")
+            ped_1 = display.get_text_input(">")
+            if (ped_1 == "short" or ped_1 == "Short"):
                 ped_a = True
-        if (verb == "placeb"):
-            if "candle stick" in config.the_player.inventory:
-                display.announce(f"The second pedestal lowers into the ground")
+            display.announce("which candlestick should be put on the second pedestal")
+            display.announce("Short\nMedium\nTall")
+            ped_1 = display.get_text_input(">")
+            if (ped_1 == "medium" or ped_1 == "Medium"):
                 ped_b = True
-        if (verb == "placec"):
-            if "tall candle stick" in config.the_player.inventory:
-                display.announce(f"The third pedestal lowers into the ground")
-                ped_c = True  
+            display.announce("which candlestick should be put on the last pedestal")
+            display.announce("Short\nMedium\nTall")
+            ped_1 = display.get_text_input(">")
+            if (ped_1 == "tall" or ped_1 == "Tall"):
+                ped_c = True
+
+        
         if (verb == "south" or verb == "east" or verb == "west"):
             config.the_player.next_loc = self.main_location.locations["beach"]
         if (verb == "north"):
