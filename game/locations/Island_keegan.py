@@ -287,9 +287,9 @@ class dungeon_entrance (location.SubLocation):
         self.verbs['south'] = self
         self.verbs['east'] = self
         self.verbs['west'] = self
-        self.verbs['place a'] = self
-        self.verbs['place b'] = self
-        self.verbs['place c'] = self
+        self.verbs['placea'] = self
+        self.verbs['placeb'] = self
+        self.verbs['placec'] = self
 
 
         # Include a couple of items and the ability to pick them up, for demo purposes
@@ -321,15 +321,15 @@ class dungeon_entrance (location.SubLocation):
         ped_a = False
         ped_b = False
         ped_c = False
-        if (verb == "place a"):
+        if (verb == "placea"):
             if "small candle stick" in config.the_player.inventory:
                 display.announce(f"The first pedestal lowers into the ground")
                 ped_a = True
-        if (verb == "place b"):
+        if (verb == "placeb"):
             if "candle stick" in config.the_player.inventory:
                 display.announce(f"The second pedestal lowers into the ground")
                 ped_b = True
-        if (verb == "place c"):
+        if (verb == "placec"):
             if "tall candle stick" in config.the_player.inventory:
                 display.announce(f"The third pedestal lowers into the ground")
                 ped_c = True  

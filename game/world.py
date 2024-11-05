@@ -2,7 +2,7 @@
 import game.location as location
 from game.locations import *
 from game.events import *
-from game.locations import Puzzle_Island
+from game.locations import Island_keegan
 import game.ship as ship
 import game.context as context
 import game.display as display
@@ -52,7 +52,7 @@ class World (context.Context):
         self.locs[self.startx+1][self.starty] = whirl
 
         #Test island: always start off next to a test island. Swap in your island to test yours.
-        testland = Puzzle_Island.Puzzle_Island (self.startx, self.starty+1, self)
+        testland = Island_keegan.Puzzle_Island (self.startx, self.starty+1, self)
         self.locs[self.startx][self.starty+1] = testland
 
         # Peaceful island directly to the right of the spawning location.
