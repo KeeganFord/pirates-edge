@@ -51,7 +51,7 @@ class dragon(combat.Monster):
         if action == "bite":
             return [random.choice(enemies)]
         elif action == "fire breath":
-            return [enemies]
+            return enemies
 
 class DragonAttack (event.Event):
     def __init__ (self):
@@ -300,6 +300,7 @@ class Beach_with_ship (location.SubLocation):
             config.the_player.next_loc = self.main_location.locations["clearing"]
 
 class dungeon_entrance (location.SubLocation):
+
     def __init__ (self, m):
         super().__init__(m)
         self.name = "dungeon entrance"
@@ -308,6 +309,9 @@ class dungeon_entrance (location.SubLocation):
         self.verbs['east'] = self
         self.verbs['west'] = self
         self.verbs['place'] = self
+        self.ped_a = False
+        self.ped_b = False
+        self.ped_c = False
        
 
 
@@ -337,31 +341,26 @@ class dungeon_entrance (location.SubLocation):
         display.announce (description)
 
     def process_verb (self, verb, cmd_list, nouns):
-        ped_a = False
-        ped_b = False
-        ped_c = False
+        
         if (verb == "place"):
-            display.announce("which candlestick should be put on the first pedestal")
-            display.announce("Short\nMedium\nTall")
+            display.announce("which candlestick should be put on the first pedestal\nShort\nMedium\nTall")
             ped_1 = display.get_text_input(">")
             if (ped_1 == "short" or ped_1 == "Short"):
-                ped_a = True
-            display.announce("which candlestick should be put on the second pedestal")
-            display.announce("Short\nMedium\nTall")
-            ped_1 = display.get_text_input(">")
-            if (ped_1 == "medium" or ped_1 == "Medium"):
-                ped_b = True
-            display.announce("which candlestick should be put on the last pedestal")
-            display.announce("Short\nMedium\nTall")
-            ped_1 = display.get_text_input(">")
-            if (ped_1 == "tall" or ped_1 == "Tall"):
-                ped_c = True
+                self.ped_a = True
+            display.announce("which candlestick should be put on the second pedestal\nShort\nMedium\nTall")
+            ped_2 = display.get_text_input(">")
+            if (ped_2 == "medium" or ped_2 == "Medium"):
+                self.ped_b = True
+            display.announce("which candlestick should be put on the last pedestal\nShort\nMedium\nTall")
+            ped_3 = display.get_text_input(">")
+            if (ped_3 == "tall" or ped_3 == "Tall"):
+                self.ped_c = True
 
         
         if (verb == "south" or verb == "east" or verb == "west"):
             config.the_player.next_loc = self.main_location.locations["beach"]
         if (verb == "north"):
-            if (ped_a == True and ped_b == True and ped_c == True):
+            if (self.ped_a == True and self.ped_b == True and self.ped_c == True):
                 config.the_player.next_loc = self.main_location.locations["dungeon_hallway"]
             else:
                 display.announce ("the way north into the cave is blocked.\n " + 
