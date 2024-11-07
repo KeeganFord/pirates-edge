@@ -11,6 +11,8 @@ import game.combat as combat
 import game.event as event
 import game.items as item
 import random
+from game.display import menu
+
 
 ####################################################################################################
 # Events and supporting classes
@@ -42,10 +44,14 @@ class dragon(combat.Monster):
     def __init__ (self, name):
         attacks = {}
         attacks["bite"] = ["bites",random.randrange(35,51), (10,30)]
-        attacks["fire breath"] = ["punches",random.randrange(35,51), (20,40)]
-        #100 to 150 hp, bite attack, 100 to 120 speed (100 is "normal")
+        attacks["fire breath"] = ["Breathes fire",random.randrange(35,51), (20,40)]
         super().__init__(name, random.randrange(100,151), attacks, 110 + random.randrange(-10,11))
         self.type_name = "Deadly Dragon"
+    def pickTargets(self, action, attacker, allies, enemies):
+        if action == "bite":
+            return [random.choice(enemies)]
+        elif action == "fire breath":
+            return [enemies]
 
 class DragonAttack (event.Event):
     def __init__ (self):
@@ -228,6 +234,22 @@ class Ancient_Flintlock(item.Item):
         self.verb = "shoot"
         self.verb2 = "shoots"
         self.NUMBER_OF_ATTACKS = 2
+
+    def pickTargets(self, action, attacker, allies, enemies):
+        if (len(enemies) <= self.NUMBER_OF_ATTACKS): # If less than or equal to two targets, hit everyone
+            return enemies
+        else:
+            options = []
+            for t in enemies:
+                options.append("attack " + t.name)
+            targets = []
+
+            while(len(targets) < self.NUMBER_OF_ATTACKS): # While loop so that it keeps going until the player picks two different targets.
+                display.announce(f"Pick target number {len(targets)}.", pause=False)
+                choice = menu(options)
+                if(not choice in targets):
+                    targets.append(enemies[choice])
+            return targets
 
 ####################################################################################################
 # Island definition
