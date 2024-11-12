@@ -57,9 +57,8 @@ class DragonAttack (event.Event):
     def __init__ (self):
         self.name = " Dragon Attack!!"
     def process (self, world):
-        '''Process the event. Populates a combat with Maroonee monsters. The first Maroonee may be modified into a "Pirate captain" by buffing its speed and health.'''
         result = {}
-        result["message"] = "the marooned pirates are defeated!"
+        result["message"] = "the dragon has been defeated! Go forth and claim your prize!"
         monsters = []
         monsters.append(dragon("Red Dragon"))
         self.type_name = "Red Dragon"
@@ -83,11 +82,6 @@ class Old_Woman(combat.Monster):
         self.type_name = "Decrepit Old Woman"
 
 class old_woman_attack (event.Event):
-    '''
-    A combat encounter with a troop of man eating monkies.
-   when drawn the old woman will attack the crew she is unable to do any real damage but she will protect the candle stick inside
-    '''
-
     def __init__ (self):
         self.name = " Old woman attacks"
 
@@ -98,7 +92,7 @@ class old_woman_attack (event.Event):
         n_appearing = random.randrange(1,2)
         n = 1
         while n <= n_appearing:
-            monsters.append(Macaque("Man-eating Macaque "+str(n)))
+            monsters.append(Macaque("Old Woman "+str(n)))
             n += 1
         display.announce ("The crew is attacked by the old woman who come running from the shed!")
         combat.Combat(monsters).combat()
@@ -123,13 +117,6 @@ class Macaque(combat.Monster):
         self.type_name = "Man-eating Macacque"
 
 class ManEatingMonkeys (event.Event):
-    '''
-    A combat encounter with a troop of man eating monkies.
-    When the event is drawn, creates a combat encounter with 4 to 8 monkies, kicks control over to the combat code to resolve the fight.
-    The monkies are "edible", which is modeled by increasing the ship's food by 5 per monkey appearing and adding an apropriate message to the result.
-        Since food is good, the event only has a 50% chance to add itself to the result.
-    '''
-
     def __init__ (self):
         self.name = " monkey attack"
 
@@ -177,9 +164,8 @@ class DungeonSkeletons (event.Event):
         self.name = " marooned pirate attack"
 
     def process (self, world):
-        '''Process the event. Populates a combat with Maroonee monsters. The first Maroonee may be modified into a "Pirate captain" by buffing its speed and health.'''
         result = {}
-        result["message"] = "the marooned pirates are defeated!"
+        result["message"] = "the skeletal pirates are defeated!"
         monsters = []
         min = 5
         uplim = 10
