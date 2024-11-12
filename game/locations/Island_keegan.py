@@ -44,14 +44,15 @@ class dragon(combat.Monster):
     def __init__ (self, name):
         attacks = {}
         attacks["bite"] = ["bites",random.randrange(35,51), (10,30)]
-        attacks["fire breath"] = ["Breathes fire",random.randrange(35,51), (20,40)]
+        attacks["fire breath"] = ["sets alight",random.randrange(35,51), (20,40)]
         super().__init__(name, random.randrange(100,151), attacks, 110 + random.randrange(-10,11))
         self.type_name = "Deadly Dragon"
     def pickTargets(self, action, attacker, allies, enemies):
-        if action == "bite":
+        if action.name == "bite":
             return [random.choice(enemies)]
-        elif action == "fire breath":
+        elif action.name == "fire breath":
             return enemies
+        return [random.choice(enemies)]
 
 class DragonAttack (event.Event):
     def __init__ (self):
@@ -307,7 +308,10 @@ class dungeon_entrance (location.SubLocation):
         self.item_in_clothes = items.Flintlock() #Flintlock from the general item list
 
         self.event_chance = 50
-        self.events.append(ManEatingMonkeys())
+        eh = 0
+        if eh == 0:
+            self.events.append(ManEatingMonkeys())
+            eh += 1
 
     def enter (self):
         edibles = False
@@ -443,7 +447,10 @@ class oldhouse (location.SubLocation):
         self.item_in_clothes = None
 
         self.event_chance = 100
-        self.events.append(old_woman_attack())
+        eh = 0
+        if eh == 0:
+            self.events.append(old_woman_attack())
+            eh += 1
 
     def enter (self):
         edibles = False
@@ -485,7 +492,10 @@ class dungeon_hallway (location.SubLocation):
         self.verbs['east'] = self
         self.verbs['west'] = self
         self.event_chance = 100
-        self.events.append(DungeonSkeletons())
+        eh = 0
+        if eh == 0:
+            self.events.append(DungeonSkeletons())
+            eh += 1
 
     def enter (self):
         edibles = False
@@ -518,8 +528,11 @@ class hoard_room (location.SubLocation):
         self.item_in_clothes = Dragons_hoard() 
         self.item_on_ground = Ancient_Flintlock()
 
-        self.event_chance = 75
-        self.events.append(DragonAttack())
+        self.event_chance = 100
+        event_Happened = 0
+        if event_Happened == 0:
+            self.events.append(DragonAttack())
+            event_Happened += 1
 
     def enter (self):
         #The description has a base description,
