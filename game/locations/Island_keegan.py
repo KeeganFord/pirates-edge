@@ -24,17 +24,17 @@ from game.display import menu
 
 class tall_candle(item.Item):
     def __init__(self):
-        super().__init__("Tall Candle Stick", 0) #Note: price is in shillings (a silver coin, 20 per pound)
+        super().__init__("Tall Candle Stick", 1)
         self.height = 3
 
 class med_candle(item.Item):
     def __init__(self):
-        super().__init__("Candle Stick", 0) #Note: price is in shillings (a silver coin, 20 per pound)
+        super().__init__("Candle Stick", 1)
         self.height = 2
 
 class short_candle(item.Item):
     def __init__(self):
-        super().__init__("Small Candle Stick", 0) #Note: price is in shillings (a silver coin, 20 per pound)
+        super().__init__("Small Candle Stick", 1)
         self.height = 1
 
 ####################################################################################################
@@ -333,18 +333,33 @@ class dungeon_entrance (location.SubLocation):
     def process_verb (self, verb, cmd_list, nouns):
         
         if (verb == "place"):
-            display.announce("which candlestick should be put on the first pedestal\nShort\nMedium\nTall")
-            ped_1 = display.get_text_input(">")
-            if (ped_1 == "short" or ped_1 == "Short"):
-                self.ped_a = True
-            display.announce("which candlestick should be put on the second pedestal\nShort\nMedium\nTall")
-            ped_2 = display.get_text_input(">")
-            if (ped_2 == "medium" or ped_2 == "Medium"):
-                self.ped_b = True
-            display.announce("which candlestick should be put on the last pedestal\nShort\nMedium\nTall")
-            ped_3 = display.get_text_input(">")
-            if (ped_3 == "tall" or ped_3 == "Tall"):
-                self.ped_c = True
+            tall = False
+            med = False
+            short = False
+            
+            for item in config.the_player.inventory:
+                if type(item) == tall_candle:
+                    tall = True
+                if type(item) == med_candle:
+                    med = True
+                if type(item) == short_candle:
+                    short = True
+
+            if (tall == True and med == True and short == True ):
+                display.announce("which candlestick should be put on the first pedestal\nShort\nMedium\nTall")
+                ped_1 = display.get_text_input(">")
+                if (ped_1 == "short" or ped_1 == "Short"):
+                    self.ped_a = True
+                display.announce("which candlestick should be put on the second pedestal\nShort\nMedium\nTall")
+                ped_2 = display.get_text_input(">")
+                if (ped_2 == "medium" or ped_2 == "Medium"):
+                    self.ped_b = True
+                display.announce("which candlestick should be put on the last pedestal\nShort\nMedium\nTall")
+                ped_3 = display.get_text_input(">")
+                if (ped_3 == "tall" or ped_3 == "Tall"):
+                    self.ped_c = True
+            else:
+                display.announce("You can not complete this puzzle yet. search the island you may find what you are looking for.")
 
         
         if (verb == "south" or verb == "east" or verb == "west"):
