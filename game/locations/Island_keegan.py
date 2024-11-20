@@ -362,9 +362,13 @@ class dungeon_entrance (location.SubLocation):
                 display.announce("You can not complete this puzzle yet. search the island you may find what you are looking for.")
 
         
-        if (verb == "south" or verb == "east" or verb == "west"):
+        if (verb == "south" ):
             config.the_player.next_loc = self.main_location.locations["beach"]
-        if (verb == "north"):
+        elif (verb == "west"):
+            config.the_player.next_loc = self.main_location.locations["clearing"]
+        elif (verb == "east"):
+            config.the_player.next_loc = self.main_location.locations["old_house"]
+        elif (verb == "north"):
             if (self.ped_a == True and self.ped_b == True and self.ped_c == True):
                 config.the_player.next_loc = self.main_location.locations["dungeon_hallway"]
             else:
@@ -422,8 +426,12 @@ class clearing (location.SubLocation):
         display.announce (description)
 
     def process_verb (self, verb, cmd_list, nouns):
-        if (verb == "south" or verb == "north" or verb == "east" or verb == "west"):
+        if (verb == "south" or verb == "west"):
             config.the_player.next_loc = self.main_location.locations["beach"]
+        elif (verb == "east"):
+            config.the_player.next_loc = self.main_location.locations["dungeon_entrance"]
+        elif (verb == "north"):
+            config.the_player.next_loc = self.main_location.locations["old_house"]
         #Handle taking items. Demo both "take cutlass" and "take all"
         if verb == "take":
             if self.item_in_tree == None and self.item_in_clothes == None:
@@ -462,10 +470,7 @@ class oldhouse (location.SubLocation):
         self.item_in_clothes = None
 
         self.event_chance = 100
-        eh = 0
-        if eh == 0:
-            self.events.append(old_woman_attack())
-            eh += 1
+        self.events.append(old_woman_attack())
 
     def enter (self):
         edibles = False
@@ -480,8 +485,12 @@ class oldhouse (location.SubLocation):
         display.announce (description)
 
     def process_verb (self, verb, cmd_list, nouns):
-        if (verb == "south" or verb == "north" or verb == "east" or verb == "west"):
+        if (verb == "south" or verb == "east"):
             config.the_player.next_loc = self.main_location.locations["beach"]
+        elif (verb == "west"):
+            config.the_player.next_loc = self.main_location.locations["dungeon_entrance"]
+        elif (verb == "north"):
+            config.the_player.next_loc = self.main_location.locations["clearing"]
         #Handle taking items. Demo both "take cutlass" and "take all"
         if verb == "take":
             if self.item_in_tree == None and self.item_in_clothes == None:
@@ -507,10 +516,7 @@ class dungeon_hallway (location.SubLocation):
         self.verbs['east'] = self
         self.verbs['west'] = self
         self.event_chance = 100
-        eh = 0
-        if eh == 0:
-            self.events.append(DungeonSkeletons())
-            eh += 1
+        self.events.append(DungeonSkeletons())
 
     def enter (self):
         edibles = False
@@ -544,10 +550,7 @@ class hoard_room (location.SubLocation):
         self.item_on_ground = Ancient_Flintlock()
 
         self.event_chance = 100
-        event_Happened = 0
-        if event_Happened == 0:
-            self.events.append(DragonAttack())
-            event_Happened += 1
+        self.events.append(DragonAttack())
 
     def enter (self):
         #The description has a base description,
