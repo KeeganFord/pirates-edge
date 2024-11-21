@@ -67,7 +67,7 @@ class DragonAttack (event.Event):
         monsters[0].health = 2*monsters[0].health
         display.announce ("You are attacked by a deadly red Dragon!")
         combat.Combat(monsters).combat()
-        result["newevents"] = [ self ]
+        result["newevents"] = [ ]
         return result
 ####################################################################################################
 # old woman attack
@@ -98,7 +98,7 @@ class old_woman_attack (event.Event):
         display.announce ("The crew is attacked by the old woman who come running from the shed!")
         combat.Combat(monsters).combat()
         if random.randrange(2) == 0:
-            result["newevents"] = [ self ]
+            result["newevents"] = [ ]
         else:
             result["newevents"] = [ ]
         config.the_player.ship.food += n_appearing*5
@@ -358,6 +358,8 @@ class dungeon_entrance (location.SubLocation):
                 ped_3 = display.get_text_input(">")
                 if (ped_3 == "tall" or ped_3 == "Tall"):
                     self.ped_c = True
+                if(self.ped_a == True and self.ped_b == True and self.ped_c == True):
+                    display.anouce("the rock begins to crumble away reavealing a dark corridor. Are the stones singed?")
             else:
                 display.announce("You can not complete this puzzle yet. search the island you may find what you are looking for.")
 
