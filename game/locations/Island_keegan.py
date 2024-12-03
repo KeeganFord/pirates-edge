@@ -10,6 +10,7 @@ import game.items as items
 import game.combat as combat
 import game.event as event
 import game.items as item
+import game.player as player
 import random
 from game.display import menu
 
@@ -17,6 +18,12 @@ from game.display import menu
 ####################################################################################################
 # Events and supporting classes
 ####################################################################################################
+####################################################################################################
+# Riddles 
+####################################################################################################
+
+
+
 
 ####################################################################################################
 # candle stick puzzle
@@ -308,10 +315,9 @@ class dungeon_entrance (location.SubLocation):
         self.item_in_clothes = items.Flintlock() #Flintlock from the general item list
 
         self.event_chance = 50
-        eh = 0
-        if eh == 0:
-            self.events.append(ManEatingMonkeys())
-            eh += 1
+        
+        self.events.append(ManEatingMonkeys())
+         
 
     def enter (self):
         edibles = False
@@ -359,7 +365,7 @@ class dungeon_entrance (location.SubLocation):
                 if (ped_3 == "tall" or ped_3 == "Tall"):
                     self.ped_c = True
                 if(self.ped_a == True and self.ped_b == True and self.ped_c == True):
-                    display.anouce("the rock begins to crumble away reavealing a dark corridor. Are the stones singed?")
+                    display.announce("the rock begins to crumble away reavealing a dark corridor. Are the stones singed?")
             else:
                 display.announce("You can not complete this puzzle yet. search the island you may find what you are looking for.")
 
@@ -517,15 +523,54 @@ class dungeon_hallway (location.SubLocation):
         self.verbs['south'] = self
         self.verbs['east'] = self
         self.verbs['west'] = self
-        self.event_chance = 100
-        self.events.append(DungeonSkeletons())
+        
 
     def enter (self):
         edibles = False
         #The description has a base description, followed by variable components.
-        description = "You enter the dungeon and walk through a dark damp hallway. "
-
+        description = "As you step inside a deep raspy voice calls out from the darkness"
+        display.announce(description)
+        self.HandleRiddles()
         #Add a couple items as a demo. This is kinda awkward but students might want to complicated things.
+    def HandleRiddles(self):
+        display.announce("Answer my riddle and face your final challenge. Answer incorrectly and meet death!")
+        riddle = self.GetRiddleAndAnswer()
+        guesses = 3
+        # While the player still has guesses, ask for their answer and respond appropriately.
+        while guesses > 0:
+            display.announce(riddle[0], pause=False)
+            plural = ""
+            if(guesses != 1):
+                plural = "s"
+
+            display.announce(f"You may guess {guesses} more time{plural}.", pause=False)
+            choice = display.get_text_input("What is your guess? ")
+            if riddle[1] in choice:
+                self.RiddleReward()
+                return
+            else:
+                guesses -= 1
+                display.announce("You have guessed incorrectly.")
+
+            if(guesses <= 0):
+                player.kill_all_pirates(self, "sudden on-set spike pit")
+                
+
+        # Returns a random riddle from the list defined below.
+    def GetRiddleAndAnswer(self):
+        riddleList = [ # A list of tuples. The first item is the riddle, while the second item is the answer.
+            ("What has roots as nobody sees, Is taller than trees, Up, up it goes, And yet never grows?", "Mountain"),
+            ("Voiceless it cries, Wingless flutters, Toothless bites, Mouthless mutters.", "wind"),
+            ("It cannot be seen, cannot be felt, Cannot be heard, cannot be smelt. It lies behind stars and under hills, And empty holes it fills. It comes out first and follows after, Ends life, kills laughter.", "dark"),
+            ("Alive without breath, As cold as death; Never thirsty, ever drinking, All in mail never clinking.", "fish")]
+        return random.choice(riddleList)
+
+        # Reward the player by making all of their pirates lucky, not sick, and fully healed.
+    def RiddleReward(self):
+            display.announce("You have guessed correctly. I will allow you to proceed to your final test.")
+            for i in config.the_player.get_pirates():
+                i.lucky = True
+                i.sick = False
 
     def process_verb (self, verb, cmd_list, nouns):
         if (verb == "south" or verb == "east" or verb == "west"):
