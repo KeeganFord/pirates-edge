@@ -36,7 +36,7 @@ class World (context.Context):
         self.locs[self.homex][self.homey] = homeport.HomePort (self.homex, self.homey, self)
 
         #Add new islands to this list:
-        island_list = [island.Island]
+        island_list = [island.Island, Island_keegan.Puzzle_Island]
         for cur_island in island_list:
             placed = False
             while placed == False:
@@ -52,8 +52,8 @@ class World (context.Context):
         self.locs[self.startx+1][self.starty] = whirl
 
         #Test island: always start off next to a test island. Swap in your island to test yours.
-        testland = Island_keegan.Puzzle_Island (self.startx, self.starty+1, self)
-        self.locs[self.startx][self.starty+1] = testland
+        #testland = Island_keegan.Puzzle_Island (self.startx, self.starty+1, self)
+        #self.locs[self.startx][self.starty+1] = testland
 
         # Peaceful island directly to the right of the spawning location.
         peacefulIsland = PeacefulIsland.PeacefulIsland(self.startx + 1, self.starty, self)
