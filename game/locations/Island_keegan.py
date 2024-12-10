@@ -19,13 +19,6 @@ from game.display import menu
 # Events and supporting classes
 ####################################################################################################
 ####################################################################################################
-# Riddles 
-####################################################################################################
-
-
-
-
-####################################################################################################
 # candle stick puzzle
 ####################################################################################################
 
@@ -79,7 +72,6 @@ class DragonAttack (event.Event):
 ####################################################################################################
 # old woman attack
 ####################################################################################################
-
 class Old_Woman(combat.Monster):
     def __init__ (self, name):
         attacks = {}
@@ -111,11 +103,9 @@ class old_woman_attack (event.Event):
         config.the_player.ship.food += n_appearing*5
 
         return result
-
 #########################
 # Man-eating macaques
 #########################
-
 class Macaque(combat.Monster):
     def __init__ (self, name):
         attacks = {}
@@ -146,11 +136,9 @@ class ManEatingMonkeys (event.Event):
         config.the_player.ship.food += n_appearing*5
 
         return result
-
 ###########
 # Skeletons
 ###########
-
 class Skeleton(combat.Monster):
     def __init__ (self, name):
         attacks = {}
@@ -200,12 +188,9 @@ class DungeonSkeletons (event.Event):
         combat.Combat(monsters).combat()
         result["newevents"] = [ self ]
         return result
-    
-
 ####################################################################################################
 # Treasure
 ####################################################################################################
-
 class RubyBroadSword(item.Item):
     def __init__(self):
         super().__init__("Ruby-Sword", 300) #Note: price is in shillings (a silver coin, 20 per pound)
@@ -244,11 +229,9 @@ class Ancient_Flintlock(item.Item):
                 if(not choice in targets):
                     targets.append(enemies[choice])
             return targets
-
 ####################################################################################################
 # Island definition
 ####################################################################################################
-
 class Puzzle_Island (location.Location):
 
     def __init__ (self, x, y, w):
